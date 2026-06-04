@@ -1,27 +1,14 @@
 workflows:
   android-workflow:
-    name: Android APK Build
+    name: Android Release APK Build
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
       flutter: stable
-      groups:
-        - java17
-    triggering:
-      events:
-        - push
     scripts:
-      - name: Set JDK to 17
+      - name: Build APK
         script: |
-          echo "Setting up JDK 17"
-          sdk use java 17.0.7-open || true
-      - name: Get Flutter packages
-        script: |
-          cd salary_organizer_mobile
           flutter packages pub get
-      - name: Build Android APK
-        script: |
-          cd salary_organizer_mobile
           flutter build apk --release --no-sound-null-safety
     artifacts:
-      - salary_organizer_mobile/build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/flutter-apk/*.apk
